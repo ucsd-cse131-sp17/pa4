@@ -7,6 +7,42 @@
 This assignment implements a compiler for the Diamondback language, a small
 language with functions, numbers, booleans, and _tuples_.
 
+## Errata
+
+Here are the bugs we found in the provided code after we've released the
+assignment.
+
+1. `x < y` and `x > y` is still buggy in the initial release, and it happens
+   when `x-y` overflows. If you want, you can use the following code (or merge
+   in the latest commit) to fix it:
+
+```
+let lbl_thn = gen_temp "prim2_then" in
+let lbl_end = gen_temp "prim2_else" in
+let op_is   = match o with
+  ...
+  | Less    -> [ ICmp (Reg(EAX), rhs_loc)
+               ; IJl lbl_thn
+               ; IMov(Reg EAX, const_false)
+               ; IJmp lbl_end
+               ; ILabel lbl_thn
+               ; IMov(Reg EAX, const_true)
+               ; ILabel lbl_end
+               ]
+  | Greater -> [ ICmp (Reg(EAX), rhs_loc)
+               ; IJg lbl_thn
+               ; IMov(Reg EAX, const_false)
+               ; IJmp lbl_end
+               ; ILabel lbl_thn
+               ; IMov(Reg EAX, const_true)
+               ; ILabel lbl_end
+               ]
+```
+   
+
+**Note:** We are **not** going to check your program using test cases that
+target the bugs above.
+
 ## Language
 
 Diamondback starts with the same semantics as Cobra, and adds support for

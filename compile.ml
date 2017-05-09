@@ -72,6 +72,8 @@ and compile_prim2_helper (o : prim2) (e1 : expr) (e2 : expr) (si : int) (env : i
   let rhs_loc = stackloc (si+1) in
   let e1_is   = compile_expr e1 si env     @ save_to_stack si     @ check_eax_num in
   let e2_is   = compile_expr e2 (si+1) env @ save_to_stack (si+1) @ check_eax_num in
+  let lbl_thn = gen_temp "prim2_then" in
+  let lbl_end = gen_temp "prim2_else" in
   let op_is   = match o with
     | Plus    -> [ IAdd (Reg(EAX), rhs_loc); check_overflow ]
     | Minus   -> [ ISub (Reg(EAX), rhs_loc); check_overflow ]
@@ -79,14 +81,21 @@ and compile_prim2_helper (o : prim2) (e1 : expr) (e2 : expr) (si : int) (env : i
                  ; IMul (Reg(EAX), rhs_loc)
                  ; check_overflow
                  ]
-    | Less    -> [ ISub (Reg(EAX), rhs_loc)
-                 ; IAnd(Reg(EAX), HexConst(0x80000000))
-                 ; IOr( Reg(EAX), HexConst(0x7FFFFFFF))
+    | Less    -> [ ICmp (Reg(EAX), rhs_loc)
+                 ; IJl lbl_thn
+                 ; IMov(Reg EAX, const_false)
+                 ; IJmp lbl_end
+                 ; ILabel lbl_thn
+                 ; IMov(Reg EAX, const_true)
+                 ; ILabel lbl_end
                  ]
-    | Greater -> [ ISub(Reg(EAX), rhs_loc)
-                 ; ISub(Reg(EAX), Const(1))
-                 ; IAnd(Reg(EAX), HexConst(0x80000000))
-                 ; IXor(Reg(EAX), HexConst(0xFFFFFFFF))
+    | Greater -> [ ICmp (Reg(EAX), rhs_loc)
+                 ; IJg lbl_thn
+                 ; IMov(Reg EAX, const_false)
+                 ; IJmp lbl_end
+                 ; ILabel lbl_thn
+                 ; IMov(Reg EAX, const_true)
+                 ; ILabel lbl_end
                  ]
     | Equal   -> []
   in     e1_is
