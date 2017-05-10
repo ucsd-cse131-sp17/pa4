@@ -38,7 +38,8 @@ let op_is   = match o with
                ; ILabel lbl_end
                ]
 ```
-   
+
+2. Fixed the parser to reject cases where the tuple length is 1 (e.g. `(4,)`)
 
 **Note:** We are **not** going to check your program using test cases that
 target the bugs above.

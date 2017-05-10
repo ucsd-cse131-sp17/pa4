@@ -44,7 +44,6 @@ exprs :
   | expr COMMA exprs { $1::$3 }
 
 tuple_exprs :
-  | expr COMMA { [$1] }
   | expr COMMA exprs { $1::$3 }
 
 simple_expr :
