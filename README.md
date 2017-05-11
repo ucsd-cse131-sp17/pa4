@@ -360,6 +360,8 @@ To see the output of all these compilers with your test cases:
 3. Run `pa4_coverage_test <program>` where `<program>` is the string that you
    want to evaluate. If you've written your program into a file, you can use
    `pa4_coverage_test "$(cat <filename>)"`.
+4. The corresponding `.s` and `.run` files will be created inside the
+   `output{i}` folder, where `{i}` corresponds to the id of the compiler.
 
 ## TODO
 
