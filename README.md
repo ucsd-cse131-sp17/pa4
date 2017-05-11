@@ -348,6 +348,19 @@ To recap, these are the possible errors, and their corresponding error messages:
 
 **Note:** `==` operator should work on _any_ kind of values now.
 
+### Coverage Testing
+
+This time, we're releasing the 7 buggy compiler that we're going to use to grade
+your test cases. There's also 1 working (as far as we know) compiler.
+
+To see the output of all these compilers with your test cases:
+
+1. Log into `ieng6`
+2. `cd` to the root of your homework (i.e. `pa4-diamondback-<github username>`)
+3. Run `pa4_coverage_test <program>` where `<program>` is the string that you
+   want to evaluate. If you've written your program into a file, you can use
+   `pa4_coverage_test "$(cat <filename>)"`.
+
 ## TODO
 
 - `IsNum`, `IsBool` and `IsTuple` in `compile_prim1`. You can use your previous
