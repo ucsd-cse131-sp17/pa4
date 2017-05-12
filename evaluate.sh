@@ -7,8 +7,8 @@
 # ..
 # 2
 
-if [[ $# -ne 1 ]]; then
-	echo "usage: $0 <code to evaluate>"
+if [[ $# -eq 0 ]]; then
+	echo "usage: $0 <code to evaluate> [ <arg1>, <arg2>, ... ]"
 	exit 1
 fi
 
@@ -21,4 +21,4 @@ make clean main && \
 	rm -f $FILENAME.run && \
 	./main <(echo "$INPUT") > $FILENAME.s && \
 	make $FILENAME.run && \
-	$FILENAME.run
+	$FILENAME.run $@
