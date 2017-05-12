@@ -427,8 +427,7 @@ let t = (1,2) in t == t --> true
    **test** as you go. This is very similar to the pairs code from lecture.
 
    So, you can just put a `Const(2)` as the first word, use the 2nd and the 3rd
-   words for the elements and leave the 4th word blank (to make the 8 byte
-   alignment we discussed earlier work).
+   words for the elements.
 2. Modify the binary and unary operators to handle tuples appropriately (it may
    be useful to skip `print` at first). **Test** as you go.
 3. Make tuple creation and access work for tuples of _any_ size. **Test** as you
