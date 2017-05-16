@@ -135,33 +135,46 @@ let run p (out : string) (runner : string -> result) : result =
     List.iter unlink [bstdout_name; bstderr_name];
     result
 
+let cmp_results check result = 
+  match check, result with
+  | Right(expect_msg), Right(actual_msg)
+  | Left(expect_msg), Left(actual_msg) ->
+    let r = Str.regexp ", *" in
+    let f s = Str.global_replace r "," s in
+    let expect_msg' = f expect_msg in
+    let actual_msg' = f actual_msg in
+    String.exists actual_msg' expect_msg'
+  | _ -> false
 
 let test_run program_str outfile expected (args : string list) test_ctxt  =
   let full_outfile = "output/" ^ outfile in
   let program = parse_string outfile program_str in
   let result = run program full_outfile (run_no_vg args) in
-  assert_equal (Right(expected ^ "\n")) result ~printer:either_printer
+  assert_equal 
+    (Right expected) 
+    result 
+    ~printer:either_printer
+    ~cmp:cmp_results
 
 let test_run_valgrind program_str outfile expected test_ctxt =
   let full_outfile = "output/" ^ outfile in
   let program = parse_string outfile program_str in
   let result = run program full_outfile run_vg in
-  assert_equal (Right(expected ^ "\n")) result ~printer:either_printer
+  assert_equal 
+    (Right expected) 
+    result 
+    ~printer:either_printer
+    ~cmp:cmp_results
 
 let test_err program_str outfile errmsg (args : string list) test_ctxt  =
   let full_outfile = "output/" ^ outfile in
   let program = parse_string outfile program_str in
   let result = run program full_outfile (run_no_vg args) in
   assert_equal
-    (Left(errmsg))
+    (Left errmsg)
     result
     ~printer:either_printer
-    ~cmp: (fun check result ->
-      match check, result with
-        | Left(expect_msg), Left(actual_message) ->
-          String.exists actual_message expect_msg          
-        | _ -> false
-    )
+    ~cmp:cmp_results
 
 let t    name program expected = name>::test_run program name expected [];;
 let tvg  name program expected = name>::test_run_valgrind program name expected;;

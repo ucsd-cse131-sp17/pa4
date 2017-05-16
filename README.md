@@ -41,6 +41,9 @@ let op_is   = match o with
 
 2. Fixed the parser to reject cases where the tuple length is 1 (e.g. `(4,)`)
 
+3. Write-up and buggy compilers disagree about the printing of tuples (e.g.
+   `"(4, 3)"` vs `"(4,3)"`). It **doesn't matter** which one you pick.
+
 **Note:** We are **not** going to check your program using test cases that
 target the bugs above.
 

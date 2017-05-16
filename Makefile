@@ -10,7 +10,7 @@ else
 endif
 endif
 
-PKGS=oUnit,extlib,unix
+PKGS=oUnit,extlib,unix,str
 BUILD=ocamlbuild -r -use-ocamlfind
 
 .PHONY: clean all
