@@ -338,7 +338,7 @@ To recap, these are the possible errors, and their corresponding error messages:
    argument: `expected a number`
 2. Using a non-boolean value for `if`'s condition: `expected a boolean`
 3. Overflow occurs when using `-`, `+`, or `*`: `overflow`
-4. Unbounded variable: `Variable identifier {id} unbounded`
+4. Unbounded variable: `Unbounded variable identifier {id}`
 5. Multiple bindings in a single `let` expression: `Multiple bindings for
    variable identifier {id}`
 6. A function application with the wrong number of arguments: `Arity`
